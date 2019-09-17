@@ -19,11 +19,11 @@
             </DropdownItem>
             <vue-scroll>
               <div style="display:inline-block;height:565px;width:100%;">
-                <DropdownItem v-for="(item,index) in product_list" :name="item" :key="index">
+                <DropdownItem v-for="(item,index) in product_list" :name="item.name" :key="index">
                   <Row>
                     <Col span="8">{{item.name}}</Col>
                     <Col span="8">{{item.code}}</Col>
-                    <Col span="8">{{item.description}}</Col>
+                    <Col span="8">{{item.allname}}</Col>
                   </Row>
                 </DropdownItem>
               </div>
@@ -64,11 +64,11 @@
       <CheckboxGroup v-model="checkbox.checkAllGroup" @on-change="checkAllGroupChange">
         <vue-scroll>
           <div v-for="(item,index) in main_list" :key="index" class="main-list-item">
-            <img :src="img_src" :alt="img_src" />
+            <img :src="item.image_url"  />
             <div class="main-list-item-describe">
-              <h3>{{item.time}}<span>UTF-8</span></h3>
-              <h4>{{item.dis}}</h4>
-              <h4>{{item.state}}</h4>
+              <h3>{{item.data_id}}<span>UTF-8</span></h3>
+              <h4>{{item.projection}}</h4>
+              <h4>{{item.sat_id}}</h4>
             </div>
             <div class="main-list-item-checkbox">
               <Checkbox :label="item.data">选择</Checkbox>
@@ -93,11 +93,13 @@ export default {
         checkAll: false,
         checkAllGroup: []
       },
-      img_src: require('../../assets/logo.png'),
-      main_list: this.$store.state.images.item_list
+      img_src: require('../../assets/logo.png')
     }
   },
   computed: {
+    main_list () {
+      return this.$store.state.images.item_list
+    }
   },
   methods: {
     ...mapGetters(['getAjax']),
@@ -183,13 +185,6 @@ export default {
   mounted () {
     const _this = this
     const Ajax = this.getAjax()
-    $.ajax({
-      url: 'http://192.168.1.43:8080/seis/v3/api/image_type?mgt_token=' + Ajax.config.mgt_token,
-      type: 'GET',
-      success: function (data) {
-        _this.product_list = data.result.item_list
-      }
-    })
     Ajax.querySatellite('', (data) => {
       _this.satellite_list = data.item_list
     })
