@@ -93,7 +93,7 @@ export default {
         checkAll: false,
         checkAllGroup: []
       },
-      img_src: require('../../assets/logo.png'),
+      img_src: require('../../assets/earth.png'),
       main_list: this.$store.state.images.item_list
     }
   },

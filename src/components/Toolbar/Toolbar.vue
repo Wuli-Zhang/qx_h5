@@ -18,15 +18,16 @@
     </div>
     <div class="toolbar-zoom">
       <div>
-        <img @click="zoom('in')" src="./../../assets/zoom-in.png" alt="" />
+        <img @click="zoom('zoomIn')" src="./../../assets/zoom-in.png" alt="" />
       </div>
       <div>
-        <img @click="zoom('out')" src="./../../assets/zoom-out.png" alt="" />
+        <img @click="zoom('zoomOut')" src="./../../assets/zoom-out.png" alt="" />
       </div>
     </div>
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 const clickoutside = {
   bind (el, binding, vnode) {
     function documentHandler (e) {
@@ -92,19 +93,18 @@ export default {
     }
   },
   methods: {
+    ...mapGetters(['getActiveWorkspace']),
     clickItemOut (e) {
       // 点击元素之外隐藏
       document.querySelectorAll('.toolbar-minbox').forEach(item => {
         item.style.display = 'none'
       })
     },
-    zoom (inorout) {
-      if (inorout == 'in') {
-        return
+    zoom (inorout, param) {
+      const wk = this.getActiveWorkspace()
+      if (wk && inorout && wk[inorout] && typeof wk[inorout] === 'function') {
+        wk[inorout](param)
       }
-      if (inorout == 'out') {
-        return
-      };
     },
     handleItemClick (index, show_src) {
       Array.from(document.querySelectorAll('.toolbar-minbox')).forEach(item => {
