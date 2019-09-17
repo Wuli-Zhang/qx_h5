@@ -47,20 +47,25 @@ export default {
         }
         self.$store.commit('setRect', rect)
         const Ajax = self.getAjax()
-        Ajax.ImageByPolygon(
-          params,
-          data => {
-            self.$store.commit('setImages', data)
-          },
-          e => {
-            console.error(e)
+        $.ajax({
+          url: `${Ajax.config.host}${Ajax.config.serviceUrl}/api/layer?mgt_token=${Ajax.config.mgt_token}`,
+          success: function (data) {
+            self.$store.commit('setImages', data.result)
           }
-        )
+        })
+        // Ajax.ImageByPolygon(
+        //   params,
+        //   data => {
+        //     self.$store.commit('setImages', data)
+        //   },
+        //   e => {
+        //     console.error(e)
+        //   }
+        // )
       })
     }
   },
   mounted () {
-    this.getAjax().setConfig({mgt_token: '7be49279ea411a18dd6aface64ede5a2'})
   }
 }
 

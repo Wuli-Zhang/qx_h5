@@ -16,8 +16,8 @@ export default {
   components: {},
   data () {
     let today = getPreviousDate()
-    let yesterday = getPreviousDate(1)
-    let beforethreedays = getPreviousDate(3)
+    let yesterday = getPreviousDate(7)
+    let beforethreedays = getPreviousDate(30)
     return {
       today: today,
       choose_time: today,
@@ -26,10 +26,10 @@ export default {
         label: '今天'
       }, {
         value: yesterday,
-        label: '前一天'
+        label: '前7天'
       }, {
         value: beforethreedays,
-        label: '前三天'
+        label: '前30天'
       }]
     }
   }

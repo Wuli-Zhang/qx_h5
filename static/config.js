@@ -1,10 +1,3 @@
-/*
- * @Date: 2019-08-09 17:34:16
- * @LastEditors: daiyujie
- * @LastEditTime: 2019-08-09 17:47:28
- * @Author: daiyujie
- * @Description: file content
- */
 var g_config = (function() {
 	//--other control
 	return {
