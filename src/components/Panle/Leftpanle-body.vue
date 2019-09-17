@@ -48,8 +48,7 @@
         <Dropdown trigger="click" @on-click="clickSensorItem">
           <a href="javascript:void(0)" class="droptitle">
             <img src="./../../assets/sensor.png" alt="产品" />
-            <span>传感器
-              <Icon type="ios-arrow-down" /></span>
+            <span>传感器<Icon type="ios-arrow-down" /></span>
           </a>
           <DropdownMenu slot="list" v-show='sensor_list.length>0'>
             <DropdownItem class="dropitemtitle">字符方式标识</DropdownItem>
