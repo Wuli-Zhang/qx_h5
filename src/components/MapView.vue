@@ -62,7 +62,7 @@ export default {
       }
       let viewer = this.getActiveWorkspace().viewer
       let provider = new Seie3d.$Cesium.WebMapTileServiceImageryProvider({
-        url: url, // 'http://61.155.169.52:8080/seis/v3/wmts/service/85/2',
+        url: url,
         layer: 'search',
         format: 'image/png',
         tileMatrixSetID: 'GoogleCRS84Quad',
@@ -72,14 +72,14 @@ export default {
       })
 
       let layer = new Seie3d.$Cesium.ImageryLayer(provider, { })
-      console.log(layer)
       viewer.imageryLayers.add(layer)
     },
-    clearSelectLayer () {
+    clearSelectLayer (fn) {
       let viewer = this.getActiveWorkspace().viewer
-      viewer.imageryLayers._layers.forEach(item => {
-        if (item.imageryProvider._layer === 'search') viewer.imageryLayers.remove(item)
-      })
+      let layers = viewer.imageryLayers._layers
+      for (let i = layers.length - 1; i > 0; i--) {
+        if (layers[i].imageryProvider._layer === 'search') viewer.imageryLayers.remove(layers[i])
+      }
     }
   },
   mounted () {

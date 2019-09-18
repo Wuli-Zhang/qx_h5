@@ -137,6 +137,8 @@ export default {
       } else {
         this.checkbox.checkAllGroup = []
       }
+
+      this.$parent.clickItem(this.checkbox.checkAllGroup)
     },
     // 点击单个
     checkAllGroupChange (data) {

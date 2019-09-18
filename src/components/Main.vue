@@ -45,7 +45,6 @@ export default {
     selectLayerurl (data) {
       const _this = this
       const { serviceUrl, mgt_token} = this.getAjax().config
-      console.log(data)
       if (data.length > 0) {
         this.$refs.map_view.clearSelectLayer()
         data.forEach(item => {
