@@ -2,7 +2,7 @@
   <div>
     <map-view ref="map_view"></map-view>
     <!-- <User/> -->
-    <Toolbar @draw='query()'/>
+    <Toolbar/>
     <Leftpanle/>
   </div>
 </template>
@@ -12,6 +12,7 @@ import User from './User/User'
 import Toolbar from './Toolbar/Toolbar'
 import Leftpanle from './Panle/Leftpanle'
 import { mapGetters } from 'vuex'
+import seie3d from '../store/seie3d'
 export default {
   components: {
     MapView,
@@ -30,21 +31,7 @@ export default {
       console.log(attr)
       const self = this
       this.$refs.map_view.selectBBox().then(rect => {
-        const params = {
-          query: {
-            start: 0,
-            projection: 'EPSG:4326',
-            polygon: rect
-          },
-          image_filter: {
-            // product_type: 1001, // --产品
-            // start_time: '2018-09-27 18:12:33',
-            // end_time: '2018-09-27 18:12:33',
-            // resolution: 0, // --分辨率
-            // sat_id: -1 // --卫星id
-            // +++传感器
-          }
-        }
+        console.log(rect)
         self.$store.commit('setRect', rect)
         const Ajax = self.getAjax()
         $.ajax({
@@ -53,16 +40,21 @@ export default {
             self.$store.commit('setImages', data.result)
           }
         })
-        // Ajax.ImageByPolygon(
-        //   params,
-        //   data => {
-        //     self.$store.commit('setImages', data)
-        //   },
-        //   e => {
-        //     console.error(e)
-        //   }
-        // )
       })
+    },
+    selectLayerurl (data) {
+      const _this = this
+      const { serviceUrl, mgt_token} = this.getAjax().config
+      console.log(data)
+      if (data.length > 0) {
+        this.$refs.map_view.clearSelectLayer()
+        data.forEach(item => {
+          let url = `${this.$store.state.seie3d.options.serviceHost}${serviceUrl}/wmts/layer/${item.data_id}/${item.data_version}?mgt_token=${mgt_token}`
+          _this.$refs.map_view.showSelectLayer(url)
+        })
+      } else {
+        this.$refs.map_view.clearSelectLayer()
+      }
     }
   },
   mounted () {

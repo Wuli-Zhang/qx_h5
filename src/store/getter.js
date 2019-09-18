@@ -10,5 +10,8 @@ export default {
    */
   getAjax: state => {
     return state.seie3d.Ajax
+  },
+  getOption: state => {
+    return state.seie3d.option
   }
 }

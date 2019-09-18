@@ -64,14 +64,14 @@
       <CheckboxGroup v-model="checkbox.checkAllGroup" @on-change="checkAllGroupChange">
         <vue-scroll>
           <div v-for="(item,index) in main_list" :key="index" class="main-list-item">
-            <img :src="item.image_url" />
+            <!-- <img :src="item.image_url" /> -->
             <div class="main-list-item-describe">
               <h3 :title='item.name'>{{item.name}}</h3>
               <h4 :title='item.projection'>{{item.projection}}</h4>
               <h4 :title='item.sat_id'>{{item.sat_id}}</h4>
             </div>
             <div class="main-list-item-checkbox">
-              <Checkbox :label="item.data">选择</Checkbox>
+              <Checkbox :label="item">选择</Checkbox>
             </div>
           </div>
         </vue-scroll>
@@ -92,8 +92,7 @@ export default {
         indeterminate: false,
         checkAll: false,
         checkAllGroup: []
-      },
-      img_src: require('../../assets/earth.png')
+      }
     }
   },
   computed: {
@@ -124,7 +123,7 @@ export default {
     handleCheckAll () {
       let allchecked = []
       this.main_list.forEach(item => {
-        allchecked.push(item.data)
+        allchecked.push(item)
       })
       if (this.checkbox.indeterminate) {
         this.checkbox.checkAll = false
@@ -151,7 +150,8 @@ export default {
         this.checkbox.indeterminate = false
         this.checkbox.checkAll = false
       }
-      console.log(data)
+
+      this.$parent.clickItem(data)
     },
     ajax (attr) {
       const _this = this
@@ -183,7 +183,7 @@ export default {
     const _this = this
     const Ajax = this.getAjax()
     $.ajax({
-      url: 'http://192.168.1.43:8080/seis/v3/api/image_type?mgt_token=' + Ajax.config.mgt_token,
+      url: `${Ajax.config.host}${Ajax.config.serviceUrl}/api/image_type?mgt_token=${Ajax.config.mgt_token}`,
       type: 'GET',
       success: function (data) {
         _this.product_list = data.result.item_list

@@ -14,6 +14,11 @@ export default {
   },
   data () {
     return { }
+  },
+  methods: {
+    clickItem (data) {
+      this.$parent.selectLayerurl(data)
+    }
   }
 }
 

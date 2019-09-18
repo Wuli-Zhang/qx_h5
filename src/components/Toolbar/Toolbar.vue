@@ -146,7 +146,7 @@ export default {
     },
     draw (type) {
       console.log('画', type)
-      this.$emit('draw', {param: type})
+      this.$parent.query()
     },
     snap (type) {
       console.log('切图', type)

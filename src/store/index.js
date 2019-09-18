@@ -15,11 +15,9 @@ import seie3d from './seie3d'
 Vue.use(Vuex)
 
 window.s3d = seie3d
-
 seie3d.Ajax.setConfig({
   mgt_token: '7be49279ea411a18dd6aface64ede5a2'
 })
-
 export default new Vuex.Store({
   state: {
     seie3d: seie3d,
