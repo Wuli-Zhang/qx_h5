@@ -2,7 +2,7 @@
 export const getPreviousDate = (num = 0) => {
   var data = new Date()
   data.setTime(data.getTime() - 24 * 60 * 60 * 1000 * num)
-  var time = data.getFullYear() + '-' + (data.getMonth() + 1) + '-' + data.getDate()
+  var time = data.getFullYear() + '-' + (data.getMonth() + 1 < 10 ? '0' + (data.getMonth() + 1) : data.getMonth() + 1) + '-' + (data.getDate() < 10 ? '0' + (data.getDate()) : data.getDate()) + '\xa0' + '00:00:00'
   return time
 }
 
