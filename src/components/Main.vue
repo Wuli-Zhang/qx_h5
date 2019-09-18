@@ -34,7 +34,10 @@ export default {
         console.log(rect)
         self.$store.commit('setRect', rect)
         const Ajax = self.getAjax()
+        let start_time = this.$store.state.times.start_time
+        let end_time = this.$store.state.times.end_time
         $.ajax({
+          // url: `${Ajax.config.host}${Ajax.config.serviceUrl}/api/layer?mgt_token=${Ajax.config.mgt_token}&start_time=${start_time}&end_time=${end_time}`,
           url: `${Ajax.config.host}${Ajax.config.serviceUrl}/api/layer?mgt_token=${Ajax.config.mgt_token}`,
           success: function (data) {
             self.$store.commit('setImages', data.result)
