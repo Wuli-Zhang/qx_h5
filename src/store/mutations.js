@@ -55,5 +55,13 @@ export default {
       sat_id: params.sat_id || state.imagesAttr.sat_id,
       sensor_id: params.sensor_id || state.imagesAttr.sensor_id
     }
+  },
+  /** 获取开始/结束时间 **/
+  setTime (state, params) {
+    state.times = {
+      start_time: params.start_time,
+      end_time: params.end_time
+    }
   }
+
 }

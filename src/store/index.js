@@ -35,6 +35,10 @@ export default new Vuex.Store({
       product_id: '',
       sat_id: '',
       sensor_id: ''
+    },
+    times: {
+      start_time: '',
+      end_time: ''
     }
   },
   getters,
