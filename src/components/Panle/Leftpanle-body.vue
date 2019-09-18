@@ -19,7 +19,7 @@
             </DropdownItem>
             <vue-scroll>
               <div style="display:inline-block;height:565px;width:100%;">
-                <DropdownItem v-for="(item,index) in product_list" :name="item.name" :key="index">
+                <DropdownItem v-for="(item,index) in product_list" :name="item.data_id" :key="index">
                   <Row>
                     <Col span="8">{{item.name}}</Col>
                     <Col span="8">{{item.code}}</Col>
@@ -40,7 +40,7 @@
           </a>
           <DropdownMenu slot="list">
             <DropdownItem class="dropitemtitle">隶属卫星</DropdownItem>
-            <DropdownItem v-for="(item,index) in satellite_list" :name="item" :key="index">{{item.name}}</DropdownItem>
+            <DropdownItem v-for="(item,index) in satellite_list" :name="item.data_id" :key="index">{{item.name}}</DropdownItem>
           </DropdownMenu>
         </Dropdown>
         </Col>
@@ -53,7 +53,7 @@
           </a>
           <DropdownMenu slot="list" v-show='sensor_list.length>0'>
             <DropdownItem class="dropitemtitle">字符方式标识</DropdownItem>
-            <DropdownItem v-for="(item,index) in sensor_list" :name="item" :key="index">{{item.name}}</DropdownItem>
+            <DropdownItem v-for="(item,index) in sensor_list" :name="item.name" :key="index">{{item.name}}</DropdownItem>
           </DropdownMenu>
         </Dropdown>
         </Col>
@@ -98,25 +98,29 @@ export default {
   computed: {
     main_list () {
       return this.$store.state.images.item_list
+    },
+    product_id () {
+      return this.$store.state.imagesAttr.product_id
+    },
+    sat_id () {
+      return this.$store.state.imagesAttr.sat_id
+    },
+    sensor_id () {
+      return this.$store.state.imagesAttr.sensor_id
     }
   },
   methods: {
     ...mapGetters(['getAjax']),
     clickProductItem (name) {
-      console.log(name)
-    },
-    clickSatelliteItem (item) {
-      const _this = this
-      const Ajax = this.getAjax()
-      Ajax.querySensor({ sat_id: item.data_id }, (data) => {
-        _this.sensor_list = data.item_list
-      })
-      this.$store.commit('setImagesAttr', { sat_id: item.data_id })
+      this.$store.commit('setImagesAttr', {product_id: name})
       this.ajax()
     },
-    clickSensorItem (item) {
-      console.log(item)
-      this.$store.commit('setImagesAttr', { sensor_id: item.data_id })
+    clickSatelliteItem (name) {
+      this.$store.commit('setImagesAttr', { sat_id: name })
+      this.ajax()
+    },
+    clickSensorItem (name) {
+      this.$store.commit('setImagesAttr', { sensor_id: name })
       this.ajax()
     },
 
@@ -137,8 +141,6 @@ export default {
       } else {
         this.checkbox.checkAllGroup = []
       }
-
-      this.$parent.clickItem(this.checkbox.checkAllGroup)
     },
     // 点击单个
     checkAllGroupChange (data) {
@@ -155,7 +157,7 @@ export default {
 
       this.$parent.clickItem(data)
     },
-    ajax (attr) {
+    ajax () {
       const _this = this
       // const params = {
       //   query: {
@@ -173,10 +175,16 @@ export default {
       //   }
       // }
       const Ajax = this.getAjax()
+      let start_time = this.$store.state.times.start_time
+      let end_time = this.$store.state.times.end_time
+      let rect = this.$store.state.rect
+      console.log(rect)
       $.ajax({
-        url: `${Ajax.config.host}${Ajax.config.serviceUrl}/api/layer?mgt_token=${Ajax.config.mgt_token}`,
+        url: `${Ajax.config.host}${Ajax.config.serviceUrl}/api/layer?mgt_token=${Ajax.config.mgt_token}&start_time=${start_time}${end_time ? '&end_time=' + end_time : ''}
+        ${rect ? '&bbox=' + rect : ''}${this.sat_id ? '&sat_id=' + this.sat_id : ''}${this.product_id ? '&image_type=' + this.product_id : ''}
+        ${this.sensor_id ? '&sensor_id=' + this.sensor_id : ''}`,
         success: function (data) {
-          self.$store.commit('setImages', data.result)
+          _this.$store.commit('setImages', data.result)
         }
       })
     }
@@ -193,6 +201,9 @@ export default {
     })
     Ajax.querySatellite('', (data) => {
       _this.satellite_list = data.item_list
+    }),
+    Ajax.querySensor('', (data) => {
+      _this.sensor_list = data.item_list
     })
   }
 
