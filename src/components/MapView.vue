@@ -19,7 +19,7 @@ export default {
       })
     },
     selectBBox () {
-      this.clearSelect()
+      this.clearDraw()
       return new Promise((resolve, reject) => {
         if (!this.activeWk) {
           reject('工作空间尚未准备好。')
@@ -50,7 +50,7 @@ export default {
         })
       })
     },
-    clearSelect () {
+    clearDraw () {
       if (!this.activeWk) {
         return
       }
@@ -79,6 +79,18 @@ export default {
       let layers = viewer.imageryLayers._layers
       for (let i = layers.length - 1; i > 0; i--) {
         if (layers[i].imageryProvider._layer === 'search') viewer.imageryLayers.remove(layers[i])
+      }
+    },
+    changeZoom (type, param) {
+      const wk = this.getActiveWorkspace()
+      if (wk && type && wk[type] && typeof wk[type] === 'function') {
+        wk[type](param)
+      }
+    },
+    measure (type) {
+      const wk = this.getActiveWorkspace()
+      if (wk) {
+        wk.beginMeasure(type)
       }
     }
   },

@@ -54,6 +54,15 @@ export default {
       } else {
         this.$refs.map_view.clearSelectLayer()
       }
+    },
+    changeZoom (type) {
+      this.$refs.map_view.changeZoom(type)
+    },
+    measure (type) {
+      this.$refs.map_view.measure(type)
+    },
+    clear () {
+      this.$refs.map_view.clearDraw()
     }
   },
   mounted () {

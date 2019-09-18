@@ -9,7 +9,7 @@
       <div class="toolbar-minbox">
         <div class="toolbar-item" v-for="(i,key) in item.children" :key="key">
           <Tooltip placement="top" :content="i.title" :delay="500">
-            <div class="toolbar-box-show_act" @click.stop="handleItemClick(item.active_type,i.show_src)">
+            <div class="toolbar-box-show_act" @click.stop="handleItemClick(item.active_type,i.item_type)">
               <img :src="i.show_src" :alt="i.title" />
             </div>
           </Tooltip>
@@ -57,10 +57,12 @@ export default {
         active_type: 'draw',
         children: [{
           show_src: require('./../../assets/rectangle.png'),
-          title: '矩形'
+          title: '矩形',
+          item_type: 'rectangle'
         }, {
           show_src: require('./../../assets/polygon.png'),
-          title: '多边形'
+          title: '多边形',
+          item_type: 'polygon'
         }]
       }, {
         show_src: require('./../../assets/length.png'),
@@ -68,45 +70,50 @@ export default {
         active_type: 'measure',
         children: [{
           show_src: require('./../../assets/area.png'),
-          title: '测面'
+          title: '测面',
+          item_type: 'area'
         }, {
           show_src: require('./../../assets/length.png'),
-          title: '测距'
+          title: '测距',
+          item_type: 'surface_distance'
         }]
+      // }, {
+      //   show_src: require('./../../assets/cut-rectangle.png'),
+      //   title: '剪切',
+      //   active_type: 'snap',
+      //   children: [{
+      //     show_src: require('./../../assets/cut-rectangle.png'),
+      //     title: '矩形',
+      //     item_type: 'rectangle'
+      //   }, {
+      //     show_src: require('./../../assets/cut-polygon.png'),
+      //     title: '多边形',
+      //     item_type: 'polygon'
+      //   }]
       }, {
-        show_src: require('./../../assets/cut-rectangle.png'),
-        title: '剪切',
-        active_type: 'snap',
-        children: [{
-          show_src: require('./../../assets/cut-rectangle.png'),
-          title: '矩形'
-        }, {
-          show_src: require('./../../assets/cut-polygon.png'),
-          title: '多边形'
-        }]
-      }, {
-        show_src: require('./../../assets/point.png'),
-        title: '点击',
-        active_type: 'point',
+        show_src: require('./../../assets/delete.png'),
+        title: '清除',
+        active_type: 'clear',
         children: []
+      // }, {
+      //   show_src: require('./../../assets/point.png'),
+      //   title: '点击',
+      //   active_type: 'point',
+      //   children: []
       }]
     }
   },
   methods: {
-    ...mapGetters(['getActiveWorkspace']),
     clickItemOut (e) {
       // 点击元素之外隐藏
       document.querySelectorAll('.toolbar-minbox').forEach(item => {
         item.style.display = 'none'
       })
     },
-    zoom (inorout, param) {
-      const wk = this.getActiveWorkspace()
-      if (wk && inorout && wk[inorout] && typeof wk[inorout] === 'function') {
-        wk[inorout](param)
-      }
+    zoom (inorout) {
+      this.$parent.changeZoom(inorout)
     },
-    handleItemClick (index, show_src) {
+    handleItemClick (index, item_type) {
       Array.from(document.querySelectorAll('.toolbar-minbox')).forEach(item => {
         item.style.display = 'none'
       })
@@ -115,19 +122,19 @@ export default {
           document.querySelectorAll('.toolbar-minbox')[index].style.display = 'flex'
         } else {
           // 点击自己
-          this.clickItself(show_src)
+          this.clickItself(item_type)
         }
         return false
       } else {
         switch (index) {
           case 'draw':
-            this.draw(show_src)
+            this.draw(item_type)
             break
           case 'snap':
-            this.snap(show_src)
+            this.snap(item_type)
             break
           case 'measure':
-            this.measure(show_src)
+            this.measure(item_type)
             break
           default:
             break
@@ -135,24 +142,36 @@ export default {
         // 换图标
         this.icons.forEach(item => {
           if (item.active_type == index) {
-            item.show_src = show_src
-            return
+            item.children.forEach(i => {
+              if (i.item_type === item_type) {
+                item.show_src = i.show_src
+              }
+            })
           };
         })
       }
     },
     clickItself (item_type) {
       console.log('clickItself点击自己', item_type)
+      switch (item_type) {
+        case 'clear':
+          this.$parent.clear()
+          break
+        case 'point':
+          break
+        default:
+          break
+      }
     },
     draw (type) {
-      console.log('画', type)
-      this.$parent.query()
+      this.$parent.query(type)
     },
     snap (type) {
       console.log('切图', type)
     },
     measure (type) {
       console.log('测距', type)
+      this.$parent.measure(type)
     }
 
   }
