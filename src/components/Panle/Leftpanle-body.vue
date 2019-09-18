@@ -53,7 +53,7 @@
           </a>
           <DropdownMenu slot="list" v-show='sensor_list.length>0'>
             <DropdownItem class="dropitemtitle">字符方式标识</DropdownItem>
-            <DropdownItem v-for="(item,index) in sensor_list" :name="item.name" :key="index">{{item.name}}</DropdownItem>
+            <DropdownItem v-for="(item,index) in sensor_list" :name="item.data_id" :key="index">{{item.name}}</DropdownItem>
           </DropdownMenu>
         </Dropdown>
         </Col>
