@@ -11,6 +11,7 @@
 </template>
 <script>
 import {getPreviousDate} from '../../util/data'
+import { mapGetters } from 'vuex'
 export default {
   name: 'Leftpanle-top',
   components: {},
@@ -46,11 +47,20 @@ export default {
     }
   },
   methods: {
+    ...mapGetters(['getAjax']),
     changeTime (value) {
+      let _this = this
+      const Ajax = _this.getAjax()
       let params = {
         start_time: value,
         end_time: this.format_current_time
       }
+      $.ajax({
+        url: `${Ajax.config.host}${Ajax.config.serviceUrl}/api/layer?mgt_token=${Ajax.config.mgt_token}&start_time=${params.start_time}&end_time=${params.end_time}`,
+        success: function (data) {
+          _this.$store.commit('setImages', data.result)
+        }
+      })
       this.$store.commit('setTime', params)
     }
   },
