@@ -116,7 +116,12 @@ export default {
       this.ajax()
     },
     clickSatelliteItem (name) {
+      const _this = this
+      const Ajax = this.getAjax()
       this.$store.commit('setImagesAttr', { sat_id: name })
+      Ajax.querySensor({ sat_id: name }, (data) => {
+        _this.sensor_list = data.item_list
+      })
       this.ajax()
     },
     clickSensorItem (name) {
@@ -159,21 +164,6 @@ export default {
     },
     ajax () {
       const _this = this
-      // const params = {
-      //   query: {
-      //     start: 0,
-      //     projection: 'EPSG:4326',
-      //     polygon: this.$store.state.rect
-      //   },
-      //   image_filter: {
-      //     product_type: this.$store.state.imagesAttr.product_id, // --产品
-      //     // start_time: '2018-09-27 18:12:33',
-      //     // end_time: '2018-09-27 18:12:33',
-      //     // resolution: 0, // --分辨率
-      //     sat_id: this.$store.state.imagesAttr.sat_id, // --卫星id
-      //     sensor: this.$store.state.imagesAttr.sensor_id // +++传感器
-      //   }
-      // }
       const Ajax = this.getAjax()
       let start_time = this.$store.state.times.start_time
       let end_time = this.$store.state.times.end_time
@@ -201,9 +191,6 @@ export default {
     })
     Ajax.querySatellite('', (data) => {
       _this.satellite_list = data.item_list
-    }),
-    Ajax.querySensor('', (data) => {
-      _this.sensor_list = data.item_list
     })
   }
 
