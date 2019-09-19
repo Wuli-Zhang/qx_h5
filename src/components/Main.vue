@@ -27,18 +27,14 @@ export default {
   },
   methods: {
     ...mapGetters(['getAjax']),
-    query (attr) {
-      console.log(attr)
+    query () {
       const self = this
       this.$refs.map_view.selectBBox().then(rect => {
-        console.log(rect)
         self.$store.commit('setRect', rect)
         const Ajax = self.getAjax()
-        let start_time = this.$store.state.times.start_time
-        let end_time = this.$store.state.times.end_time
         $.ajax({
-          // url: `${Ajax.config.host}${Ajax.config.serviceUrl}/api/layer?mgt_token=${Ajax.config.mgt_token}&start_time=${start_time}&end_time=${end_time}`,
-          url: `${Ajax.config.host}${Ajax.config.serviceUrl}/api/layer?mgt_token=${Ajax.config.mgt_token}`,
+          url: `${Ajax.config.host}${Ajax.config.serviceUrl}/api/layer?mgt_token=${Ajax.config.mgt_token}&bbox=${self.$store.state.rect}&start_time=${self.$store.state.times.start_time}&end_time=${self.$store.state.times.end_time}`,
+          type: 'GET',
           success: function (data) {
             self.$store.commit('setImages', data.result)
           }
