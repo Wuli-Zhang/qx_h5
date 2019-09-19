@@ -44,6 +44,18 @@ export default {
       let MM = (this.current_time.getMinutes() < 10 ? '0' + (this.current_time.getMinutes()) : this.current_time.getMinutes()) + ':'
       let S = (this.current_time.getSeconds() < 10 ? '0' + (this.current_time.getSeconds()) : this.current_time.getSeconds())
       return Y + M + D + H + MM + S
+    },
+    product_id () {
+      return this.$store.state.imagesAttr.product_id
+    },
+    sat_id () {
+      return this.$store.state.imagesAttr.sat_id
+    },
+    sensor_id () {
+      return this.$store.state.imagesAttr.sensor_id
+    },
+    rect () {
+      return this.$store.state.rect
     }
   },
   methods: {
@@ -56,10 +68,9 @@ export default {
         end_time: this.format_current_time
       }
       $.ajax({
-        url: `${Ajax.config.host}${Ajax.config.serviceUrl}/api/layer?mgt_token=${Ajax.config.mgt_token}&start_time=${params.start_time}&end_time=${params.end_time}`,
-        success: function (data) {
-          _this.$store.commit('setImages', data.result)
-        }
+        url: `${Ajax.config.host}${Ajax.config.serviceUrl}/api/layer?mgt_token=${Ajax.config.mgt_token}&start_time=${params.start_time}${params.end_time ? '&end_time=' + params.end_time : ''}
+        ${this.rect ? '&bbox=' + this.rect : ''}${this.sat_id ? '&sat_id=' + this.sat_id : ''}${this.product_id ? '&image_type=' + this.product_id : ''}
+        ${this.sensor_id ? '&sensor_id=' + this.sensor_id : ''}`
       })
       this.$store.commit('setTime', params)
     }
