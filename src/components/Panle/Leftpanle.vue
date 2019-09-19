@@ -1,5 +1,5 @@
 <template>
-  <div id='leftpanle'>
+  <div id='leftpanle' v-show='hasList'>
     <Leftpanletop/>
     <Leftpanlebody/>
   </div>
@@ -13,7 +13,17 @@ export default {
     Leftpanlebody
   },
   data () {
-    return { }
+    return {
+    }
+  },
+  computed: {
+    hasList () {
+      if (this.$store.state.rect) {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   methods: {
     clickItem (data) {

@@ -112,7 +112,7 @@ export default {
   methods: {
     ...mapGetters(['getAjax']),
     clickProductItem (name) {
-      this.$store.commit('setImagesAttr', {product_id: name})
+      this.$store.commit('setImagesAttr', { product_id: name })
       this.ajax()
     },
     clickSatelliteItem (name) {
@@ -146,6 +146,7 @@ export default {
       } else {
         this.checkbox.checkAllGroup = []
       }
+      this.$parent.clickItem(this.checkbox.checkAllGroup)
     },
     // 点击单个
     checkAllGroupChange (data) {
@@ -165,13 +166,11 @@ export default {
     ajax () {
       const _this = this
       const Ajax = this.getAjax()
-      let start_time = this.$store.state.times.start_time
-      let end_time = this.$store.state.times.end_time
-      let rect = this.$store.state.rect
-      console.log(rect)
+      // let start_time = this.$store.state.times.start_time
+      // let end_time = this.$store.state.times.end_time
       $.ajax({
-        url: `${Ajax.config.host}${Ajax.config.serviceUrl}/api/layer?mgt_token=${Ajax.config.mgt_token}&start_time=${start_time}${end_time ? '&end_time=' + end_time : ''}
-        ${rect ? '&bbox=' + rect : ''}${this.sat_id ? '&sat_id=' + this.sat_id : ''}${this.product_id ? '&image_type=' + this.product_id : ''}
+        url: `${Ajax.config.host}${Ajax.config.serviceUrl}/api/layer?mgt_token=${Ajax.config.mgt_token}&start_time=${this.$store.state.times.start_time}${this.$store.state.times.end_time ? '&end_time=' + this.$store.state.times.end_time : ''}
+        ${this.$store.state.rect ? '&bbox=' + this.$store.state.rect : ''}${this.sat_id ? '&sat_id=' + this.sat_id : ''}${this.product_id ? '&image_type=' + this.product_id : ''}
         ${this.sensor_id ? '&sensor_id=' + this.sensor_id : ''}`,
         success: function (data) {
           _this.$store.commit('setImages', data.result)

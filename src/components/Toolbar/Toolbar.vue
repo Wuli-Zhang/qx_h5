@@ -27,7 +27,6 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
 const clickoutside = {
   bind (el, binding, vnode) {
     function documentHandler (e) {
@@ -141,7 +140,7 @@ export default {
         }
         // 换图标
         this.icons.forEach(item => {
-          if (item.active_type == index) {
+          if (item.active_type === index) {
             item.children.forEach(i => {
               if (i.item_type === item_type) {
                 item.show_src = i.show_src
@@ -152,7 +151,6 @@ export default {
       }
     },
     clickItself (item_type) {
-      console.log('clickItself点击自己', item_type)
       switch (item_type) {
         case 'clear':
           this.$parent.clear()
@@ -166,9 +164,9 @@ export default {
     draw (type) {
       this.$parent.query(type)
     },
-    snap (type) {
-      console.log('切图', type)
-    },
+    // snap (type) {
+    //   console.log('切图', type)
+    // },
     measure (type) {
       console.log('测距', type)
       this.$parent.measure(type)

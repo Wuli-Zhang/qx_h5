@@ -56,8 +56,7 @@ export default {
   },
   computed: {
     isLogin () {
-      let {user_info} = this.$store.state
-      if (user_info.user_login) {
+      if (this.$store.state.user_info.user_login) {
         return 'background:#6979f8;'
       } else {
         return 'background:#cccccc;'
@@ -71,8 +70,7 @@ export default {
       this.$refs.panle.cancel()
     },
     showUserInfo () {
-      const { user_info } = this.$store.state
-      if (user_info.user_login) {
+      if (this.$store.state.user_info.user_login) {
         this.$refs.panle.show()
       } else {
         this.$refs.login.show()

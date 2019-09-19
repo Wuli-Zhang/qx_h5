@@ -35,7 +35,10 @@ export default {
                 x: carti.lon
               }
             })
-            let minx = array[0].x, maxx = array[0].x, miny = array[0].y, maxy = array[0].y
+            let minx = array[0].x
+            let maxx = array[0].x
+            let miny = array[0].y
+            let maxy = array[0].y
             array.forEach(item => {
               minx = Math.min(minx, item.x)
               maxx = Math.max(maxx, item.x)
@@ -55,6 +58,9 @@ export default {
         return
       }
       this.activeWk.toolmgr.clear()
+      this.$store.commit('setRect', '')
+      this.$store.commit('setImagesAttr', {product_id: '', sat_id: '', sensor_id: ''})
+      this.$store.commit('setImages', {item_list: []})
     },
     showSelectLayer (url) {
       if (!this.activeWk) {

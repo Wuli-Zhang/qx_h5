@@ -70,7 +70,10 @@ export default {
       $.ajax({
         url: `${Ajax.config.host}${Ajax.config.serviceUrl}/api/layer?mgt_token=${Ajax.config.mgt_token}&start_time=${params.start_time}${params.end_time ? '&end_time=' + params.end_time : ''}
         ${this.rect ? '&bbox=' + this.rect : ''}${this.sat_id ? '&sat_id=' + this.sat_id : ''}${this.product_id ? '&image_type=' + this.product_id : ''}
-        ${this.sensor_id ? '&sensor_id=' + this.sensor_id : ''}`
+        ${this.sensor_id ? '&sensor_id=' + this.sensor_id : ''}`,
+        success: function (data) {
+          _this.$store.commit('setImages', data.result)
+        }
       })
       this.$store.commit('setTime', params)
     }

@@ -51,9 +51,9 @@ export default {
   },
   setImagesAttr (state, params) {
     state.imagesAttr = {
-      product_id: params.product_id || state.imagesAttr.product_id,
-      sat_id: params.sat_id || state.imagesAttr.sat_id,
-      sensor_id: params.sensor_id || state.imagesAttr.sensor_id
+      product_id: params.product_id || '',
+      sat_id: params.sat_id || '',
+      sensor_id: params.sensor_id || ''
     }
   },
   /** 获取开始/结束时间 **/
